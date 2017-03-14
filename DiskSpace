@@ -1,0 +1,38 @@
++ (NSString *)totalDiskSpace
+{
+	long long space = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:NSFileSystemSize] longLongValue];
+	return [self stringForSize:space];
+}
+
++ (NSString *)freeDiskSpace
+{
+	long long freeSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:NSFileSystemFreeSize] longLongValue];
+	return [self stringForSize:freeSpace];
+}
+
++ (NSString *)usedDiskSpace
+{
+	return [self stringForSize:[self usedDiskSpaceInBytes]];
+}
+
++ (CGFloat)totalDiskSpaceInBytes {
+	long long space = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:NSFileSystemSize] longLongValue];
+	return space;
+}
+
++ (CGFloat)freeDiskSpaceInBytes {
+	long long freeSpace = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:NSFileSystemFreeSize] longLongValue];
+	return freeSpace;
+}
+
++ (CGFloat)usedDiskSpaceInBytes {
+	long long usedSpace = [self totalDiskSpaceInBytes] - [self freeDiskSpaceInBytes];
+	return usedSpace;
+}
+
++ (NSString *)stringForSize:(long long)size
+{
+	NSString *sizeStr = [NSByteCountFormatter stringFromByteCount:size countStyle:NSByteCountFormatterCountStyleBinary];
+	
+	return sizeStr;
+}
